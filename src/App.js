@@ -1,19 +1,22 @@
-import React, { useState } from 'react'
-import { useLiveQuery } from 'use-fireproof'
+import React from 'react'
+import { useLiveQuery, useDocument } from 'use-fireproof'
 
 function App() {
   const todos = useLiveQuery('date').docs
   const database = useLiveQuery.database
-  const [newTodo, setNewTodo] = useState('')
+  const [todo, setTodo, saveTodo] = useDocument({ text: '', date: Date.now(), completed: false })
 
   return (
     <div>
-      <input type="text" value={newTodo} onChange={e => setNewTodo(e.target.value)} />
-      <button onClick={() => {
-        setNewTodo('')
-        database.put({ text: newTodo, date: Date.now(), completed: false })
-        
-        }}>Save</button>
+      <input type="text" value={todo.text} onChange={e => setTodo({ text: e.target.value })} />
+      <button
+        onClick={() => {
+          saveTodo()
+          setTodo(false)
+        }}
+      >
+        Save
+      </button>
       <ul>
         {todos.map(todo => (
           <li key={todo._id}>
