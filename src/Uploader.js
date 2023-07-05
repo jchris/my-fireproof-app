@@ -30,7 +30,9 @@ function MyUploaderArea({ database }) {
 const UploaderArea = withIdentity(MyUploaderArea)
 
 function AgentLoader({ children }) {
-  const [, { loadAgent }] = useKeyring()
+  const [state, client] = useKeyring()
+  const { loadAgent } = client
+  console.log('agent loader', state, client)
   // eslint-disable-next-line
   useEffect(() => {
     loadAgent()
